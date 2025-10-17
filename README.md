@@ -1,5 +1,6 @@
 # To play the game:
 Run the file 'main.py'
+Go up and down to navigate through the different players and press spacebar to start the game
 
 # Controls:
   ## Player 1 Controls:
