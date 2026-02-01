@@ -1,9 +1,5 @@
 import pygame as pyg
-import fighter_data.fighter_moves.pnr as pnr
-import fighter_data.fighter_moves.stk as stk
-import fighter_data.fighter_moves.bmr as bmr
-import fighter_data.fighter_moves.trn as trn
-import fighter_data.fighter_moves.vlt as vlt
+
 
 
 class Fighter():

@@ -4,11 +4,11 @@ from fighter import Fighter
 from button import Button
 import ast
 import sys
-import fighter_data.puncher as puncher
-import fighter_data.volt as volt
-import fighter_data.bomber as bomber
-import fighter_data.transformer as transformer
-import fighter_data.stick as stick
+from fighter_data.puncher import Puncher
+from fighter_data.volt import Volt
+from fighter_data.bomber import Bomber
+from fighter_data.transformer import Transformer
+from fighter_data.stick import Stick
 
 pyg.init()
 
@@ -122,13 +122,13 @@ P2DELAY = 0
 
 def show_select_screen():
     global player1_index, player2_index, fighter_2, fighter_1, display_menu, game_on, P1DELAY, P2DELAY
-    player_names = [("The Puncher", "PNR"), 
-                    ("The Stick", "STK"),
-                    ("The Transformer", "TRN"),
-                    ("The Volt", "VLT"),
-                    ("The Bomber", "BMR")]
-    player1 = player_names[player1_index]
-    player2 = player_names[player2_index]
+    player_map = [("The Puncher", Puncher), 
+                    ("The Stick", Stick),
+                    ("The Transformer", Transformer),
+                    ("The Volt", Volt),
+                    ("The Bomber", Bomber)]
+    player1 = player_map[player1_index]
+    player2 = player_map[player2_index]
 
     # title screen:
     game_title = Text(screen, BIG_FONT, WHITE, "DEADLY FIGHT", (140, 75))
@@ -144,13 +144,13 @@ def show_select_screen():
 
     if (up_btn1.draw() or key[pyg.K_w]) and P1DELAY == 0:
         player1_index += 1
-        if player1_index == len(player_names):
+        if player1_index == len(player_map):
             player1_index = 0
         P1DELAY = CHANGE_FIGHTER_DELAY
 
     if (down_btn1.draw() or key[pyg.K_s]) and P1DELAY == 0:
         if player1_index == 0:
-            player1_index = len(player_names) - 1
+            player1_index = len(player_map) - 1
         else:
             player1_index -= 1
         P1DELAY = CHANGE_FIGHTER_DELAY
@@ -161,13 +161,13 @@ def show_select_screen():
     # Buttons for player 2
     if (up_btn2.draw() or key[pyg.K_UP]) and P2DELAY == 0:
         player2_index += 1
-        if player2_index == len(player_names):
+        if player2_index == len(player_map):
             player2_index = 0
         P2DELAY = CHANGE_FIGHTER_DELAY
 
     if (down_btn2.draw() or key[pyg.K_DOWN]) and P2DELAY == 0:
         if player2_index == 0:
-            player2_index = len(player_names) - 1
+            player2_index = len(player_map) - 1
         else:
             player2_index -= 1
         P2DELAY = CHANGE_FIGHTER_DELAY
@@ -197,8 +197,10 @@ def show_select_screen():
     if start_btn.draw() or key[pyg.K_SPACE]:
 
         # create two fighter instances
-        fighter_1 = transformer.Transformer(200, 380, 1, False)
-        fighter_2 = volt.Volt(700, 380, 2, True)
+        player_1_fighter = player1[1]
+        player_2_fighter = player2[1]
+        fighter_1 = player_1_fighter(200, 380, 1, False)
+        fighter_2 = player_2_fighter(700, 380, 2, True)
         display_menu = False
         game_on = True
 
