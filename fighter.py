@@ -236,6 +236,18 @@ class Fighter():
         self.transformed = False
         self.misc_attacking = False
     
+    def on_projectile_hit(self, target, blocking, dmg):
+        """update fighters when hit"""
+        if blocking is True:
+            target.health -= dmg * 0.3
+            if self.fighter_id == 'VLT':
+                target.meter -= 35
+        else:
+            if self.fighter_id == 'VLT':
+                target.meter -= 50
+            target.health -= dmg
+            target.hit = True
+
 
     def update_projectile(self, surface, screen_width):
         """update projectile"""
@@ -250,19 +262,9 @@ class Fighter():
                 self.projectile_rect.x += self.projectile_speed
 
             if self.projectile_rect.colliderect(self.target.rect):
-                
-
-                if self.target.blocking is True:
-                    self.target.health -= self.projectile_dmg * 0.3
-                    if self.fighter_id == 'VLT':
-                        self.target.meter -= 35
-                else:
-                    if self.fighter_id == 'VLT':
-                        self.target.meter -= 50
-                    self.target.health -= self.projectile_dmg
-                    self.target.hit = True
+                self.on_projectile_hit(self.target, self.target.blocking, self.projectile_dmg)
                 self.projectile_fired = False
-
+               
             # When projectile is about to go off screen
             if self.projectile_rect.left + self.projectile_speed < 0 or self.projectile_rect.right > screen_width:
                 
@@ -297,14 +299,7 @@ class Fighter():
         key = pyg.key.get_pressed()
 
 
-        # How much stamina each attack should take for each character:
-        stamina_dict = {'PNR':[30, 50, 20],
-                        'STK': [30, 50, 30],
-                        'BMR': [30, 60, 40],
-                        'TRN': [25, 50, 0],
-                        'VLT': [20, 50, 0]}
-
-        # Can only attack if doing nothing else 
+               # Can only attack if doing nothing else 
         if self.attacking is False and self.alive is True and self.glide_counter == 20:
 
 
@@ -336,29 +331,29 @@ class Fighter():
                     if self.attack_cooldown == 0:
                         # Determine which attack type was used
                         
-                        if key[pyg.K_e] and self.meter >= stamina_dict[self.fighter_id][0]:
+                        if key[pyg.K_e] and self.meter >= self.stamina_costs[0]:
                             self.attack_type = 1
                             self.meter -= 25
                             self.attacking = True
                             
-                        elif key[pyg.K_r] and self.meter >= stamina_dict[self.fighter_id][1]:
+                        elif key[pyg.K_r] and self.meter >= self.stamina_costs[1]:
                             self.attack_type = 2
                             self.meter -= 50
                             self.attacking = True
 
-                        elif key[pyg.K_t] and self.meter >= stamina_dict[self.fighter_id][2]:
+                        elif key[pyg.K_t] and self.meter >= self.stamina_costs[2]:
                             if self.fighter_id == 'STK':
                                 if self.health <= 30 and self.transformed is False:
-                                    self.meter -= stamina_dict[self.fighter_id][2]
+                                    self.meter -= self.stamina_costs[2]
                                     self.attacking = True
                                     self.attack_type = 3
                                 elif self.transformed:
-                                    self.meter -= stamina_dict[self.fighter_id][2]
+                                    self.meter -= self.stamina_costs[2]
                                     self.attacking = True
                                     self.attack_type = 3
                             else:
                                 self.attack_type = 3
-                                self.meter -= stamina_dict[self.fighter_id][2]
+                                self.meter -= self.stamina_costs[2]
                                 self.attacking = True
     
 
@@ -389,29 +384,29 @@ class Fighter():
                     if self.attack_cooldown == 0:
                         # Determine which attack type was used
                         
-                        if key[pyg.K_COMMA] and self.meter >= stamina_dict[self.fighter_id][0]:
+                        if key[pyg.K_COMMA] and self.meter >= self.stamina_costs[0]:
                             self.attack_type = 1
                             self.meter -= 25
                             self.attacking = True
                             
-                        elif key[pyg.K_PERIOD] and self.meter >= stamina_dict[self.fighter_id][1]:
+                        elif key[pyg.K_PERIOD] and self.meter >= self.stamina_costs[1]:
                             self.attack_type = 2
                             self.meter -= 50
                             self.attacking = True
 
-                        elif key[pyg.K_SLASH] and self.meter >= stamina_dict[self.fighter_id][2]:
+                        elif key[pyg.K_SLASH] and self.meter >= self.stamina_costs[2]:
                             if self.fighter_id == 'STK':
                                 if self.health <= 30 and self.transformed is False:
-                                    self.meter -= stamina_dict[self.fighter_id][2]
+                                    self.meter -= self.stamina_costs[2]
                                     self.attacking = True
                                     self.attack_type = 3
                                 elif self.transformed:
-                                    self.meter -= stamina_dict[self.fighter_id][2]
+                                    self.meter -= self.stamina_costs[2]
                                     self.attacking = True
                                     self.attack_type = 3
                             else:
                                 self.attack_type = 3
-                                self.meter -= stamina_dict[self.fighter_id][2]
+                                self.meter -= self.stamina_costs[2]
                                 self.attacking = True
 
 

@@ -5,6 +5,7 @@ from button import Button
 import ast
 import sys
 import fighter_data.puncher as puncher
+import fighter_data.volt as volt
 
 pyg.init()
 
@@ -193,8 +194,8 @@ def show_select_screen():
     if start_btn.draw() or key[pyg.K_SPACE]:
 
         # create two fighter instances
-        fighter_1 = puncher.Puncher(200, 380, 1, False)
-        fighter_2 = puncher.Puncher(700, 380, 2, True)
+        fighter_1 = volt.Volt(200, 380, 1, False)
+        fighter_2 = volt.Volt(700, 380, 2, True)
         display_menu = False
         game_on = True
 
