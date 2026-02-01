@@ -110,8 +110,7 @@ class Fighter():
 
         elif self.hit:
             action_index = 3
-            if self.fighter_id == 'TRN' and self.transformed:
-                self.transformed = False
+            self.got_hit()
         
         elif self.attacking:
             animation_cooldown = 30
@@ -194,7 +193,10 @@ class Fighter():
     def attack1(self):
         """Primary attack"""
         raise NotImplementedError("Subclasses must implement this method")
-
+    
+    def got_hit(self):
+        if self.fighter_id == 'TRN' and self.transformed:
+            self.transformed = False
 
 
     def attack2(self):  
@@ -235,16 +237,13 @@ class Fighter():
         self.hit = False
         self.transformed = False
         self.misc_attacking = False
+        self.projectile_rect = None
     
     def on_projectile_hit(self, target, blocking, dmg):
         """update fighters when hit"""
         if blocking is True:
             target.health -= dmg * 0.3
-            if self.fighter_id == 'VLT':
-                target.meter -= 35
         else:
-            if self.fighter_id == 'VLT':
-                target.meter -= 50
             target.health -= dmg
             target.hit = True
 
