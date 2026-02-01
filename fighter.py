@@ -141,12 +141,6 @@ class Fighter():
             action_index += 9
         self.change_action(action_index)
         
-
-            
-            
-
-
-        
         # Update image
         self.image = self.animation_list[self.animation_index[self.action][self.frame_index]]
 

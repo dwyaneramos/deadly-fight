@@ -89,7 +89,7 @@ class Bomber(Fighter):
 
     def misc_attack(self, screen_width):
         """sfds"""
-        if self.projectile_rect is None:
+        if self.projectile_rect is None or self.misc_attacking is False:
             return
 
         if self.projectile_rect.colliderect(self.target.rect):
