@@ -81,10 +81,6 @@ class Volt(Fighter):
         self.meter += 5
         self.health -= 1.5
 
-    def misc_attack(self, screen_width):
-        """fdff"""
-        pass
-        
 
     def on_projectile_hit(self, target, blocking, dmg):
         """update fighters when hit"""

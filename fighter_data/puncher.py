@@ -71,10 +71,6 @@ class Puncher(Fighter):
         self.attack_cooldown = 5
         self.glide_counter = 6
         self.attacking_glide = True
-
-    def misc_attack(self, screen_width):
-        """d"""
-        pass
     
         
 

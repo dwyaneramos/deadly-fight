@@ -197,7 +197,7 @@ def show_select_screen():
     if start_btn.draw() or key[pyg.K_SPACE]:
 
         # create two fighter instances
-        fighter_1 = stick.Stick(200, 380, 1, False)
+        fighter_1 = transformer.Transformer(200, 380, 1, False)
         fighter_2 = volt.Volt(700, 380, 2, True)
         display_menu = False
         game_on = True

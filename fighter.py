@@ -73,18 +73,7 @@ class Fighter():
             self.meter = 100
         
         if self.meter < 100:
-            if self.transformed:
-                if self.fighter_id == 'STK':
-                    self.meter += 0.55
-                elif self.fighter_id == 'TRN':
-                    self.meter += 0.1
-            else:
-                self.meter += 0.35
-
-        
-    
-
-    
+            self.meter += 0.35
 
     def change_action(self, new_action):
         # Check if the new action is different to the previous one
@@ -110,7 +99,7 @@ class Fighter():
 
         elif self.hit:
             action_index = 3
-            self.got_hit()
+            self.on_hit()
         
         elif self.attacking:
             animation_cooldown = 30
@@ -188,10 +177,6 @@ class Fighter():
         """Primary attack"""
         raise NotImplementedError("Subclasses must implement this method")
     
-    def got_hit(self):
-        if self.fighter_id == 'TRN' and self.transformed:
-            self.transformed = False
-
 
     def attack2(self):  
         """Heavy attack"""
@@ -205,7 +190,7 @@ class Fighter():
 
     def misc_attack(self, screen_width):
         """misc attack"""
-        raise NotImplementedError("Subclasses must implement this method")
+        pass
         
 
 
@@ -240,6 +225,8 @@ class Fighter():
         else:
             target.health -= dmg
             target.hit = True
+    def on_hit(self):
+        pass
 
 
     def update_projectile(self, surface, screen_width):

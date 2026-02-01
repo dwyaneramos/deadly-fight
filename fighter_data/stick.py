@@ -96,8 +96,6 @@ class Stick(Fighter):
                 else:
                     self.projectile_flipped = False
 
-    def misc_attack(self, screen_width):
-        pass
 
     def update_meter(self):
         if self.meter < 0:

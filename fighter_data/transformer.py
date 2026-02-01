@@ -85,8 +85,6 @@ class Transformer(Fighter):
             self.transformed = False
         else:
             self.transformed = True
-            
-        
         
     def misc_attack(self, screen_width):
         global CRASH_DMG
@@ -114,3 +112,18 @@ class Transformer(Fighter):
                 self.misc_attacking = False
                 self.glide_counter = 20
                 self.transformed = False
+
+    def update_meter(self):
+        if self.meter < 0:
+            self.meter = 0
+        if self.meter > 100:
+            self.meter = 100
+        
+        if self.meter < 100:
+            if self.transformed:
+                self.meter += 0.1
+            else:
+                self.meter += 0.35               
+
+    def on_hit(self):
+        self.transformed = False
