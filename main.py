@@ -3,6 +3,8 @@ from text import Text
 from fighter import Fighter
 from button import Button
 import ast
+import sys
+import fighter_data.puncher as puncher
 
 pyg.init()
 
@@ -31,7 +33,6 @@ font = pyg.font.Font('assets/images/fonts/VT323-Regular.ttf', 60)
 
 screen = pyg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pyg.display.set_caption('Deadly Fight')
-
 
 # load sfx
 skull_img = pyg.image.load("assets/images/misc/skull.png").convert_alpha()
@@ -71,32 +72,8 @@ def display_score():
         display_skull(SCREEN_WIDTH - 80 - 60)
 
 
-def extract_fighter_sheet(fighter_id):
-    """sdfds"""
-    filename = 'assets/images/fighters/' + fighter_id + '.png'
-    return pyg.image.load(filename)
 
 
-def extract_fighter_data(fighter_id):
-    """sdfds"""
-    filename = f"fighter_data/fighter_info/{fighter_id}_DATA.txt"
-    
-    data = []
-    infile = open(filename)
-    lines = infile.read().splitlines()
-    for line in lines:
-        data.append(line)
-    
-    name, steps, indeces, size, scale, offset, fighter_id, can_transform = data
-    indeces = ast.literal_eval(indeces)
-    offset = ast.literal_eval(offset)
-
-    can_transform_dict = {"True" : True, "False" : False}
-    can_transform = can_transform_dict[can_transform]
-
-
-    
-    return [int(size), int(scale), offset, int(steps), indeces, name, fighter_id, can_transform]
 
 
 # 
@@ -214,12 +191,10 @@ def show_select_screen():
 
 
     if start_btn.draw() or key[pyg.K_SPACE]:
-        fighter_1_data = extract_fighter_data(player1[1])
-        fighter_2_data = extract_fighter_data(player2[1])
 
         # create two fighter instances
-        fighter_1 = Fighter(200, 380, 1, False, fighter_1_data, extract_fighter_sheet(fighter_1_data[6]))
-        fighter_2 = Fighter(700, 380, 2, True, fighter_2_data, extract_fighter_sheet(fighter_2_data[6]))
+        fighter_1 = puncher.Puncher(200, 380, 1, False)
+        fighter_2 = puncher.Puncher(700, 380, 2, True)
         display_menu = False
         game_on = True
 

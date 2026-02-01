@@ -1,4 +1,5 @@
 import pygame as pyg
+        
 
 def attack1(self):
         """Primary attack"""

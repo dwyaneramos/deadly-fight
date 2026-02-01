@@ -6,9 +6,8 @@ import fighter_data.fighter_moves.trn as trn
 import fighter_data.fighter_moves.vlt as vlt
 
 
-
 class Fighter():
-    def __init__(self, x, y, player, flip, data, sprite_sheet):
+    def __init__(self, x, y, player, flip, data):
         self.rect = pyg.Rect((x, y, 80, 180))
         self.player = player
         self.vel_y = 0
@@ -38,7 +37,9 @@ class Fighter():
         self.offset = data[2]
         animation_steps = data[3]
 
-        self.animation_list = self.load_images(sprite_sheet, animation_steps)
+
+        self.sprite_sheet = data[8]
+        self.animation_list = self.load_images(self.sprite_sheet, animation_steps)
         self.animation_index = data[4]
         
         self.name = data[5]
