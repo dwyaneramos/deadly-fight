@@ -193,60 +193,23 @@ class Fighter():
     
     def attack1(self):
         """Primary attack"""
-        if self.fighter_id == 'PNR':
-            pnr.attack1(self)
-        elif self.fighter_id == 'STK':
-            stk.attack1(self)
-        elif self.fighter_id == 'BMR':
-            bmr.attack1(self)
-        elif self.fighter_id == 'TRN':
-            trn.attack1(self)
-        elif self.fighter_id == 'VLT':
-            vlt.attack1(self)
+        raise NotImplementedError("Subclasses must implement this method")
 
 
 
     def attack2(self):  
         """Heavy attack"""
-        if self.fighter_id == 'PNR':
-            pnr.attack2(self)
-        elif self.fighter_id == 'STK':
-            stk.attack2(self)
-        elif self.fighter_id == 'BMR':
-            bmr.attack2(self)
-        elif self.fighter_id == 'TRN':
-            trn.attack2(self)
-        elif self.fighter_id == 'VLT':
-            vlt.attack2(self)
+        raise NotImplementedError("Subclasses must implement this method")
     
     def attack3(self):  
         """Misc attack
         All projectile attacks should be under attack3
         self.projectile.flipped to avoid switching direction bug"""
-        if self.fighter_id == 'PNR':
-            pnr.attack3(self)
-        elif self.fighter_id == 'STK':
-            stk.attack3(self)
-        elif self.fighter_id == 'BMR':
-            bmr.attack3(self)
-        elif self.fighter_id == 'TRN':
-            trn.attack3(self)
-        elif self.fighter_id == 'VLT':
-            vlt.attack3(self)
-    
+        raise NotImplementedError("Subclasses must implement this method")
 
     def misc_attack(self, screen_width):
         """misc attack"""
-        if self.misc_attacking:
-            if self.fighter_id == 'PNR':
-                pnr.misc_attack(self)
-            elif self.fighter_id == 'STK':
-                stk.misc_attack(self)
-            elif self.fighter_id == 'BMR':
-                bmr.misc_attack(self, screen_width)
-            elif self.fighter_id == 'TRN':
-                trn.misc_attack(self)
-        
+        raise NotImplementedError("Subclasses must implement this method")
         
 
 
