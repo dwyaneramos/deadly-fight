@@ -23,14 +23,8 @@ class Puncher(Fighter):
         super().__init__ (x, y, player, flip, self.fighter_data) 
 
 
-        self.stamina_costs = [30, 50, 20]
-
-        ## How much stamina each attack should take for each character:
-        #stamina_dict = {'PNR':[30, 50, 20],
-        #               'STK': [30, 50, 30],
-        #               'BMR': [30, 60, 40],
-        #               'TRN': [25, 50, 0],
-        #               'VLT': [20, 50, 0]}
+        # How much stamina each attack should take 
+        self.stamina_costs = [15, 50, 20]
 
 
 
@@ -51,7 +45,7 @@ class Puncher(Fighter):
                 self.target.hit = True
 
     def attack2(self):
-        self.attack_cooldown = 50
+        self.attack_cooldown = 40
         """Heavy attack"""
         attacking_rect = pyg.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 3 * self.rect.width, self.rect.height)
         # pyg.draw.rect(self.surface, (0, 255, 0), attacking_rect)

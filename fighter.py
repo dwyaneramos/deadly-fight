@@ -307,7 +307,7 @@ class Fighter():
             
             LIGHT_ATK = 1 
             HEAVY_ATK = 2
-                
+            MISC_ATK = 3
 
             # player 
             if self.hit is False:
@@ -339,12 +339,12 @@ class Fighter():
                         
                         if KEY_LIGHT_ATK and self.meter >= self.stamina_costs[0]:
                             self.attack_type = LIGHT_ATK
-                            self.meter -= 25
+                            self.meter -= self.stamina_costs[LIGHT_ATK - 1]
                             self.attacking = True
                             
                         elif KEY_HEAVY_ATK and self.meter >= self.stamina_costs[1]:
                             self.attack_type = HEAVY_ATK
-                            self.meter -= 50
+                            self.meter -= self.stamina_costs[HEAVY_ATK - 1]
                             self.attacking = True
 
                         elif KEY_MISC_ATK and self.meter >= self.stamina_costs[2]:
@@ -364,14 +364,8 @@ class Fighter():
             self.jump = False
             dy = screen_height - floor_height - self.rect.bottom
         
-        
-        
         # Ensure players face each other
-        if target.rect.centerx > self.rect.centerx:
-            self.flip = False
-        else:
-            self.flip = True
-
+        self.flip = False if target.rect.centerx > self.rect.centerx else True
         # Apply attack cooldown
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1

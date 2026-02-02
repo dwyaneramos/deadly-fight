@@ -44,12 +44,12 @@ class Volt(Fighter):
                 if self.target.blocking is True:
                     self.target.health -= 11
                     self.target.glide_counter = 19
-                    self.target.meter -= 30
+                    self.target.meter -= 8
                 else:
                     self.target.health -= 7
                     self.target.glide_counter = 19
                     self.target.hit = True
-                    self.target.meter -= 40
+                    self.target.meter -= 16
 
 
     def attack2(self):
