@@ -1,6 +1,15 @@
 import pygame as pyg
 
-
+# Action indeces
+IDLING = 0 
+RUNNING = 1
+JUMPING = 2
+ATTACKED = 3
+DYING = 4 
+BLOCKING = 5
+ATTACKING_LIGHT = 6
+ATTACKING_HEAVY = 7
+ATTACKING_MISC = 8
 
 class Fighter():
     def __init__(self, x, y, player, flip, data):
@@ -85,15 +94,6 @@ class Fighter():
         # 0:idle 1:run 2:jump 3:hit 4:death 5:block 6:attack1 7:attack2 8:attack3
         # When 'transformed'    
         # 9: idle, 10: run, 11:jump, 12:hit, 13:death, 14th:block, 15:attack1, 16:attack2, 17:attack3
-        IDLING = 0 
-        RUNNING = 1
-        JUMPING = 2
-        ATTACKED = 3
-        DYING = 4 
-        BLOCKING = 5
-        ATTACKING1 = 6
-        ATTACKING2 = 7
-        ATTACKING3 = 8
         TRANSFORMED_OFFSET = 9
 
         animation_cooldown = 170
@@ -112,13 +112,13 @@ class Fighter():
             animation_cooldown = 30
             
             if self.attack_type == 1:
-                action_index = ATTACKING1
+                action_index = ATTACKING_LIGHT
 
             elif self.attack_type == 2:
-                action_index = ATTACKING2
+                action_index = ATTACKING_HEAVY
 
             elif self.attack_type == 3:
-                action_index = ATTACKING3
+                action_index = ATTACKING_MISC
         elif self.jump:
             action_index = JUMPING
 
@@ -165,16 +165,16 @@ class Fighter():
         
 
             # Check if an attack was executed / Attack animation has finished
-            if (self.action % TRANSFORMED_OFFSET) == ATTACKING1:
+            if (self.action % TRANSFORMED_OFFSET) == ATTACKING_LIGHT:
                 self.attacking = False
                 self.attack1()
 
-            elif (self.action % TRANSFORMED_OFFSET) == ATTACKING2:
+            elif (self.action % TRANSFORMED_OFFSET) == ATTACKING_HEAVY:
                 self.attacking = False
                 
                 self.attack2()
             
-            elif (self.action % TRANSFORMED_OFFSET) == ATTACKING3:
+            elif (self.action % TRANSFORMED_OFFSET) == ATTACKING_MISC:
                 self.attacking = False
                 self.attack3()
     
@@ -260,11 +260,6 @@ class Fighter():
 
 
 
-            
-            
-            
-
-
     def move(self, screen_width, screen_height, surface, target, floor_height):
         SPEED = 10
         if self.transformed:
@@ -287,113 +282,78 @@ class Fighter():
                # Can only attack if doing nothing else 
         if self.attacking is False and self.alive is True and self.glide_counter == 20:
 
+            if self.player == 1:
+                KEY_LEFT = key[pyg.K_a]
+                KEY_RIGHT = key[pyg.K_d]
+                KEY_BLOCK = key[pyg.K_f]
+                KEY_UP = key[pyg.K_w]
+                KEY_LIGHT_ATK = key[pyg.K_e]
+                KEY_HEAVY_ATK = key[pyg.K_r]
+                KEY_MISC_ATK = key[pyg.K_t]
+            else:
+                KEY_LEFT = key[pyg.K_LEFT]
+                KEY_RIGHT = key[pyg.K_RIGHT]
+                KEY_BLOCK = key[pyg.K_RSHIFT]
+                KEY_UP = key[pyg.K_UP]
+                KEY_LIGHT_ATK = key[pyg.K_COMMA]
+                KEY_HEAVY_ATK = key[pyg.K_PERIOD]
+                KEY_MISC_ATK = key[pyg.K_SLASH]
 
-            # player 1 controls
-            if self.player == 1 and self.hit is False:
+                
+
+            # player 
+            if self.hit is False:
                 # Can't move when hit
                 # movement
-                if key[pyg.K_a]:
+                if KEY_LEFT:
                     dx = -SPEED
                     self.running = True
 
-                elif key[pyg.K_d]:
+                elif KEY_RIGHT:
                     dx = SPEED
                     self.running = True
 
-                elif key[pyg.K_f] and self.jump is False and self.transformed is False:
+                elif KEY_BLOCK and self.jump is False and self.transformed is False:
                     # Note: Transformed players can't block
                     self.blocking = True
                     self.meter -= 0.5
 
 
-                if key[pyg.K_w] and self.jump is False and self.blocking is False:
+                if KEY_UP and self.jump is False and self.blocking is False:
                     self.vel_y = -40
                     self.jump = True
                     self.meter -= 35
 
                 # Attack
-                if key[pyg.K_e] or key[pyg.K_r] or key[pyg.K_t]:
+                if KEY_LIGHT_ATK or KEY_HEAVY_ATK or KEY_MISC_ATK:
                     if self.attack_cooldown == 0:
                         # Determine which attack type was used
                         
-                        if key[pyg.K_e] and self.meter >= self.stamina_costs[0]:
-                            self.attack_type = 1
+                        if KEY_LIGHT_ATK and self.meter >= self.stamina_costs[0]:
+                            self.attack_type = ATTACKING_LIGHT
                             self.meter -= 25
                             self.attacking = True
                             
-                        elif key[pyg.K_r] and self.meter >= self.stamina_costs[1]:
-                            self.attack_type = 2
+                        elif KEY_HEAVY_ATK and self.meter >= self.stamina_costs[1]:
+                            self.attack_type = ATTACKING_HEAVY
                             self.meter -= 50
                             self.attacking = True
 
-                        elif key[pyg.K_t] and self.meter >= self.stamina_costs[2]:
+                        elif KEY_MISC_ATK and self.meter >= self.stamina_costs[2]:
                             if self.fighter_id == 'STK':
                                 if self.health <= 30 and self.transformed is False:
                                     self.meter -= self.stamina_costs[2]
                                     self.attacking = True
-                                    self.attack_type = 3
+                                    self.attack_type = ATTACKING_MISC
                                 elif self.transformed:
                                     self.meter -= self.stamina_costs[2]
                                     self.attacking = True
-                                    self.attack_type = 3
+                                    self.attack_type = ATTACKING_MISC
                             else:
                                 self.attack_type = 3
                                 self.meter -= self.stamina_costs[2]
                                 self.attacking = True
     
-
-            elif self.player == 2 and self.hit is False:
-                # Can't move when hit
-                # movement
-                if key[pyg.K_LEFT]:                     
-                    dx = -SPEED
-                    self.running = True
-
-                elif key[pyg.K_RIGHT]:
-                    dx = SPEED
-                    self.running = True
-
-                elif key[pyg.K_RSHIFT] and self.jump is False and self.transformed is False:
-                    # Note: Transformed players can't block
-                    self.meter -= 0.5
-                    self.blocking = True
-
-
-                if key[pyg.K_UP] and self.jump is False and self.blocking is False:
-                    self.vel_y = -40
-                    self.jump = True
-                    self.meter -= 35
-
-                # Attack
-                if key[pyg.K_COMMA] or key[pyg.K_PERIOD] or key[pyg.K_SLASH]:
-                    if self.attack_cooldown == 0:
-                        # Determine which attack type was used
-                        
-                        if key[pyg.K_COMMA] and self.meter >= self.stamina_costs[0]:
-                            self.attack_type = 1
-                            self.meter -= 25
-                            self.attacking = True
-                            
-                        elif key[pyg.K_PERIOD] and self.meter >= self.stamina_costs[1]:
-                            self.attack_type = 2
-                            self.meter -= 50
-                            self.attacking = True
-
-                        elif key[pyg.K_SLASH] and self.meter >= self.stamina_costs[2]:
-                            if self.fighter_id == 'STK':
-                                if self.health <= 30 and self.transformed is False:
-                                    self.meter -= self.stamina_costs[2]
-                                    self.attacking = True
-                                    self.attack_type = 3
-                                elif self.transformed:
-                                    self.meter -= self.stamina_costs[2]
-                                    self.attacking = True
-                                    self.attack_type = 3
-                            else:
-                                self.attack_type = 3
-                                self.meter -= self.stamina_costs[2]
-                                self.attacking = True
-
 
         # Apply gravity
         self.vel_y += GRAVITY
