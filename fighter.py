@@ -330,7 +330,7 @@ class Fighter():
                 if KEY_UP and self.jump is False and self.blocking is False:
                     self.vel_y = -40
                     self.jump = True
-                    self.meter -= 35
+                    self.meter -= 20
 
                 # Attack
                 if KEY_LIGHT_ATK or KEY_HEAVY_ATK or KEY_MISC_ATK:
