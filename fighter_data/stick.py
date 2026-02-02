@@ -109,4 +109,14 @@ class Stick(Fighter):
                 self.meter += 0.55
             else:
                 self.meter += 0.35
-
+    
+    def perform_misc_attacks(self):
+        ATTACKING_MISC = 3
+        if self.health <= 30 and self.transformed is False:
+            self.meter -= self.stamina_costs[ATTACKING_MISC - 1]
+            self.attacking = True
+            self.attack_type = ATTACKING_MISC
+        elif self.transformed:
+            self.meter -= self.stamina_costs[ATTACKING_MISC - 1]
+            self.attacking = True
+            self.attack_type = ATTACKING_MISC

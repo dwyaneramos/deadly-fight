@@ -196,7 +196,13 @@ class Fighter():
     def misc_attack(self, screen_width):
         """misc attack"""
         pass
-        
+    
+    def perform_misc_attacks(self):
+        """reason for abstraction is because The Stick requires additional checks before
+            performing its misc attack"""
+        self.attack_type = 3
+        self.meter -= self.stamina_costs[self.attack_type - 1]
+        self.attacking = True
 
 
 
@@ -298,7 +304,9 @@ class Fighter():
                 KEY_LIGHT_ATK = key[pyg.K_COMMA]
                 KEY_HEAVY_ATK = key[pyg.K_PERIOD]
                 KEY_MISC_ATK = key[pyg.K_SLASH]
-
+            
+            LIGHT_ATK = 1 
+            HEAVY_ATK = 2
                 
 
             # player 
@@ -330,31 +338,17 @@ class Fighter():
                         # Determine which attack type was used
                         
                         if KEY_LIGHT_ATK and self.meter >= self.stamina_costs[0]:
-                            self.attack_type = ATTACKING_LIGHT
+                            self.attack_type = LIGHT_ATK
                             self.meter -= 25
                             self.attacking = True
                             
                         elif KEY_HEAVY_ATK and self.meter >= self.stamina_costs[1]:
-                            self.attack_type = ATTACKING_HEAVY
+                            self.attack_type = HEAVY_ATK
                             self.meter -= 50
                             self.attacking = True
 
                         elif KEY_MISC_ATK and self.meter >= self.stamina_costs[2]:
-                            if self.fighter_id == 'STK':
-                                if self.health <= 30 and self.transformed is False:
-                                    self.meter -= self.stamina_costs[2]
-                                    self.attacking = True
-                                    self.attack_type = ATTACKING_MISC
-                                elif self.transformed:
-                                    self.meter -= self.stamina_costs[2]
-                                    self.attacking = True
-                                    self.attack_type = ATTACKING_MISC
-                            else:
-                                self.attack_type = 3
-                                self.meter -= self.stamina_costs[2]
-                                self.attacking = True
-    
-
+                            self.perform_misc_attacks()
         # Apply gravity
         self.vel_y += GRAVITY
         dy += self.vel_y
