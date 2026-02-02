@@ -120,6 +120,9 @@ def draw_bg():
 P1DELAY = 0
 P2DELAY = 0
 
+PLAYER_1_STARTING_X = 200 
+PLAYER_2_STARTING_X = 700
+
 def show_select_screen():
     global player1_index, player2_index, fighter_2, fighter_1, display_menu, game_on, P1DELAY, P2DELAY
     player_map = [("The Puncher", Puncher), 
@@ -195,12 +198,13 @@ def show_select_screen():
 
 
     if start_btn.draw() or key[pyg.K_SPACE]:
-
+        GROUND_BOUNDARY = 380
+        
         # create two fighter instances
         player_1_fighter = player1[1]
         player_2_fighter = player2[1]
-        fighter_1 = player_1_fighter(200, 380, 1, False)
-        fighter_2 = player_2_fighter(700, 380, 2, True)
+        fighter_1 = player_1_fighter(PLAYER_1_STARTING_X, GROUND_BOUNDARY, 1, False)
+        fighter_2 = player2[1](PLAYER_2_STARTING_X, GROUND_BOUNDARY, 2, True)
         display_menu = False
         game_on = True
 
@@ -277,8 +281,8 @@ def display_winner(winner, winner_player_num):
             INTRO_ON = True
             
             # The 4th index is the fighter's data
-            fighter_1.reset(200, False, fighter_1.data)
-            fighter_2.reset(700, True, fighter_2.data)
+            fighter_1.reset(PLAYER_1_STARTING_X, False, fighter_1.data)
+            fighter_2.reset(PLAYER_2_STARTING_X, True, fighter_2.data)
             ROUND_NUM += 1
         TEXT_ON_SCREEN_DURATION = 110
 

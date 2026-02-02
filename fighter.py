@@ -85,45 +85,56 @@ class Fighter():
         # 0:idle 1:run 2:jump 3:hit 4:death 5:block 6:attack1 7:attack2 8:attack3
         # When 'transformed'    
         # 9: idle, 10: run, 11:jump, 12:hit, 13:death, 14th:block, 15:attack1, 16:attack2, 17:attack3
+        IDLING = 0 
+        RUNNING = 1
+        JUMPING = 2
+        ATTACKED = 3
+        DYING = 4 
+        BLOCKING = 5
+        ATTACKING1 = 6
+        ATTACKING2 = 7
+        ATTACKING3 = 8
+        TRANSFORMED_OFFSET = 9
+
         animation_cooldown = 170
         
 
         if self.health <= 0:
             self.health = 0
             self.alive = False
-            action_index = 4
+            action_index = DYING
 
         elif self.hit:
-            action_index = 3
+            action_index = ATTACKED
             self.on_hit()
         
         elif self.attacking:
             animation_cooldown = 30
             
             if self.attack_type == 1:
-                action_index = 6
+                action_index = ATTACKING1
 
             elif self.attack_type == 2:
-                action_index = 7
+                action_index = ATTACKING2
 
             elif self.attack_type == 3:
-                action_index = 8
+                action_index = ATTACKING3
         elif self.jump:
-            action_index = 2
+            action_index = JUMPING
 
         elif self.running:
-            action_index = 1
+            action_index = RUNNING
 
         elif self.blocking:
-            action_index = 5            
+            action_index = BLOCKING
         else:
             # Idle
-            action_index = 0
+            action_index = IDLING
         
         if self.transformed:
             # Difference between the position of normal and transformed
             # actions is 9
-            action_index += 9
+            action_index += TRANSFORMED_OFFSET
         self.change_action(action_index)
         
         # Update image
@@ -145,7 +156,7 @@ class Fighter():
 
             
             # if player was hit
-            if self.action == 3 or self.action == 12:
+            if (self.action % TRANSFORMED_OFFSET) == 3:
                 self.hit = False
                 # if player was in the middle of an attack
                 self.attacking = False
@@ -154,18 +165,16 @@ class Fighter():
         
 
             # Check if an attack was executed / Attack animation has finished
-            if self.action == 6 or self.action == 15:
+            if (self.action % TRANSFORMED_OFFSET) == ATTACKING1:
                 self.attacking = False
-                # Make attack cooldown defined in the specific attack class
-                
                 self.attack1()
 
-            elif self.action == 7 or self.action == 16:
+            elif (self.action % TRANSFORMED_OFFSET) == ATTACKING2:
                 self.attacking = False
                 
                 self.attack2()
             
-            elif self.action == 8 or self.action == 17:
+            elif (self.action % TRANSFORMED_OFFSET) == ATTACKING3:
                 self.attacking = False
                 self.attack3()
     
